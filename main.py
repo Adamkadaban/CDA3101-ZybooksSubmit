@@ -13,8 +13,8 @@ with open(CONFIG_FILE) as fin:
 	zybooks_grades_path = config['zybooks_path']
 	student_mapping_path = config['student_sid_path']
 	access_token = config['api_token']
-	course_id = config['course_id']
-	assignment_id = config['assignment_id']
+	course_id = str(config['course_id'])
+	assignment_id = str(config['assignment_id'])
 
 if None in [zybooks_grades_path, student_mapping_path, access_token, course_id, assignment_id]:
 	print('[!] Item missing from config.yaml. Please check config.yaml.example')
@@ -106,6 +106,13 @@ asst_entry = list(filter(lambda x: 'quiz_id' in x and str(x['quiz_id']) == assig
 
 if not asst_entry:
 	asst_entry = list(filter(lambda x: 'id' in x and str(x['id']) == assignment_map[course_id], assignments))
+
+assignment_name = asst_entry[0]['name']
+print(f'Grading for assignment {assignment_name}. Countinue?')
+user_selection = input('Y/n')
+if user_selection not in ['Y', 'y', '\n']:
+	print('[+] Exiting')
+	exit()
 
 #print(asst_entry)
 assignment_id_map[course_id] = asst_entry[0]["id"]
