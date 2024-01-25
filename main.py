@@ -90,7 +90,6 @@ assignments_response = requests.get(url=assignments_uri,
 											headers=headers,
 											params={'per_page': '500'})
 assignments = json.loads(assignments_response.text)
-print(assignments)
 #print(assignments)
 
 
@@ -109,10 +108,17 @@ exercise_name = asst_entry[0]['name']
 
 #this_submission_uri = f'{assignments_uri}/{assignment_id_map[course_id]/submissions/{this_sid}'
 
+
+fail_count = 0
+fail_students = []
 for sid,name in sids.items():
 	print(f'Working on {name}')
 	submission_uri = f'{assignments_uri}/{assignment_id_map[course_id]}/submissions/{sid}'
-	submission_response = requests.get(url=submission_uri, headers=headers)
+	try:
+		submission_response = requests.get(url=submission_uri, headers=headers)
+	except:
+		print(f'[!] Failed to request this student')
+		continue
 
 	assignment_entry = json.loads(submission_response.text)
 	#print(assignment_entry)
@@ -127,14 +133,22 @@ for sid,name in sids.items():
 		continue
 	'''
 	# get score from xlsx
-	percent_score = df.loc[df['Full name'] == name, 'Percent grade']
+	# first, we try to get sid/score based on email
+	email = sid_email_mapping.loc[sid_email_mapping.ID == sid, 'email'].values[0]
+	percent_score = df.loc[df['Primary email'] == email, 'Percent grade']
+	# next, we try to get score based on full name
 	if percent_score.empty:
-		print(f"[!] Can't find score for student")
-	else:
-		total_points = asst_entry[0]['points_possible']
-		score = total_points * float(percent_score.values[0])/100.0
+		percent_score = df.loc[df['Full name'] == name, 'Percent grade']
+		if percent_score.empty:
+			print(f"\t[!] Can't find score for student")
+			fail_count += 1
+			fail_students.append(name)
+			continue
+	total_points = asst_entry[0]['points_possible']
+	score = total_points * float(percent_score.values[0])/100.0
 	# set grade for student
-	print(percent_score)
+	#print(percent_score)
+	print(f'\tScore: {score}')
 	'''
 	submission_uri = f'{assignments_uri}/{assignment_id_map[course_id]}/submissions/{sid}'
 	params = {'submission[posted_grade]', str(score)}
