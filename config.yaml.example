@@ -1,0 +1,6 @@
+assignment_id: 1234567
+course_id: 123456
+zybooks_path: ./thing.xlsx
+student_sid_path: ./student_mapping.csv
+api_token: 0000~aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
