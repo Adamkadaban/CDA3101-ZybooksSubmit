@@ -68,6 +68,8 @@ for course_id in assignment_map.keys():
 		assignment_submissions_response, data_set = paginated_get(url=assignment_submissions_uri,
 																		headers=headers,
 																		params=assignment_submissions_rq_params)
+	except KeyboardInterrupt:
+		print('[!] Exiting')
 	except Exception as err:
 		print(str(err))
 
@@ -108,8 +110,8 @@ if not asst_entry:
 	asst_entry = list(filter(lambda x: 'id' in x and str(x['id']) == assignment_map[course_id], assignments))
 
 assignment_name = asst_entry[0]['name']
-print(f'Grading for assignment {assignment_name}. Countinue?')
-user_selection = input('Y/n')
+print(f'Grading for assignment {assignment_name}. Countinue? (Y/n)')
+user_selection = input()
 if user_selection not in ['Y', 'y', '\n']:
 	print('[+] Exiting')
 	exit()
@@ -131,6 +133,8 @@ for sid,name in sids.items():
 	submission_uri = f'{assignments_uri}/{assignment_id_map[course_id]}/submissions/{sid}'
 	try:
 		submission_response = requests.get(url=submission_uri, headers=headers)
+	except KeyboardInterrupt:
+		print('[!] Exiting')
 	except:
 		print(f'[!] Failed to request this student')
 		continue
@@ -169,6 +173,8 @@ for sid,name in sids.items():
 	params = {'submission[posted_grade]', str(score)}
 	try:
 		response = requests.put(url=submission_uri, headers=headers, params=params)
+	except KeyboardInterrupt:
+		print('[!] Exiting')
 	except:
 		print('[!] Failed to submit score')
 
