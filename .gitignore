@@ -1,6 +1,6 @@
 # CUSTOM
 
-API_TOKEN
+config.yaml
 *.xlsx
 *.csv
 
