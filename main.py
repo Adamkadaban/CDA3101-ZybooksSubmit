@@ -191,7 +191,7 @@ for sid,name in sids.items():
 	# set grade for student
 	#print(percent_score)
 	print(f'\tScore: {score}')
-	'''
+
 	submission_uri = f'{assignments_uri}/{assignment_id_map[course_id]}/submissions/{sid}'
 	params = {'submission[posted_grade]', str(score)}
 	try:
@@ -201,5 +201,3 @@ for sid,name in sids.items():
 		exit()
 	except:
 		print('[!] Failed to submit score')
-
-	'''
