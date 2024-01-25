@@ -5,9 +5,14 @@ import requests
 import json
 #from pprint import pprint
 
-path = './thing.xlsx'
-df = pd.read_excel(path)
+zybooks_grades = './thing.xlsx'
+student_mapping = 'student_mapping.csv'
+df = pd.read_excel(zybooks_grades)
 df['Full name'] = df['First name'] + ' ' + df['Last name']
+
+
+sid_email_mapping = pd.read_csv(student_mapping)
+sid_email_mapping['email'] = sid_email_mapping['SIS Login ID']
 
 
 # print(df['Last name'])
@@ -85,7 +90,7 @@ assignments_response = requests.get(url=assignments_uri,
 											headers=headers,
 											params={'per_page': '500'})
 assignments = json.loads(assignments_response.text)
-
+print(assignments)
 #print(assignments)
 
 
@@ -126,7 +131,8 @@ for sid,name in sids.items():
 	if percent_score.empty:
 		print(f"[!] Can't find score for student")
 	else:
-		score = float(percent_score.values[0])/100.0
+		total_points = asst_entry[0]['points_possible']
+		score = total_points * float(percent_score.values[0])/100.0
 	# set grade for student
 	print(percent_score)
 	'''
