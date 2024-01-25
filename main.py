@@ -3,9 +3,13 @@
 import pandas as pd
 import requests
 import json
+#from pprint import pprint
 
 path = './thing.xlsx'
 df = pd.read_excel(path)
+df['Full name'] = df['First name'] + ' ' + df['Last name']
+
+
 # print(df['Last name'])
 
 
@@ -55,16 +59,23 @@ for course_id in assignment_map.keys():
 		print(str(err))
 
 	for entry_dict in data_set:
-		name = entry_dict['user']['sortable_name']
-		name = name.replace(' ','')
+		'''
+		if entry_dict['user']['name'] != entry_dict['user']['short_name']:
+			pprint(entry_dict)
+		'''
+		name = entry_dict['user']['name']
+		#name = name.replace(' ','')
 		test_student_name = 'Student-Test'
+		'''
 		if name[:len(test_student_name)] == test_student_name:
 			name = f'Zz-{name}'
+		'''
 		sids[entry_dict["user"]["id"]] = name
 print(f'[+] Got {len(sids)} students!')
 
 print('[+] Getting exercise info')
-'''
+
+
 headers = {'Content-Type': 'application/json',
 			   'Authorization': 'Bearer ' + access_token}
 
@@ -88,9 +99,42 @@ if not asst_entry:
 assignment_id_map[course_id] = asst_entry[0]["id"]
 
 
-print(assignment_id_map)
+#print(assignment_id_map)
 exercise_name = asst_entry[0]['name']
 
 #this_submission_uri = f'{assignments_uri}/{assignment_id_map[course_id]/submissions/{this_sid}'
 
-'''
+for sid,name in sids.items():
+	print(f'Working on {name}')
+	submission_uri = f'{assignments_uri}/{assignment_id_map[course_id]}/submissions/{sid}'
+	submission_response = requests.get(url=submission_uri, headers=headers)
+
+	assignment_entry = json.loads(submission_response.text)
+	#print(assignment_entry)
+
+
+	submission_id = assignment_entry['id']
+	attempt = assignment_entry['attempt']
+
+	'''
+	if attempt is None:
+		print(f'No attempts made by this student')
+		continue
+	'''
+	# get score from xlsx
+	percent_score = df.loc[df['Full name'] == name, 'Percent grade']
+	if percent_score.empty:
+		print(f"[!] Can't find score for student")
+	else:
+		score = float(percent_score.values[0])/100.0
+	# set grade for student
+	print(percent_score)
+	'''
+	submission_uri = f'{assignments_uri}/{assignment_id_map[course_id]}/submissions/{sid}'
+	params = {'submission[posted_grade]', str(score)}
+	try:
+		response = requests.put(url=submission_uri, headers=headers, params=params)
+	except:
+		print('[!] Failed to submit score')
+
+	'''
