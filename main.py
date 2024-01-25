@@ -145,8 +145,9 @@ for sid,name in sids.items():
 	except KeyboardInterrupt:
 		print('[!] Exiting')
 		exit()
-	except:
+	except Exception as err:
 		print(f'[!] Failed to request this student')
+		print(str(err))
 		continue
 
 	assignment_entry = json.loads(submission_response.text)
