@@ -112,11 +112,15 @@ if not asst_entry:
 	asst_entry = list(filter(lambda x: 'id' in x and str(x['id']) == assignment_map[course_id], assignments))
 
 assignment_name = asst_entry[0]['name']
-print(f'Grading for assignment {assignment_name}. Countinue? (Y/n)')
-user_selection = input()
-if autorun or user_selection not in ['Y', 'y', '\n', '']:
-	print('[-] Exiting')
-	exit()
+print(f'Grading for assignment {assignment_name}.', end='')
+if not autorun:
+	print(' Countinue? (Y/n)')
+	user_selection = input()
+	if user_selection not in ['Y', 'y', '\n', '']:
+		print('[-] Exiting')
+		exit()
+else:
+	print()
 
 #print(asst_entry)
 assignment_id_map[course_id] = asst_entry[0]["id"]
