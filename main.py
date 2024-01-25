@@ -193,11 +193,15 @@ for sid,name in sids.items():
 	print(f'\tScore: {score}')
 
 	submission_uri = f'{assignments_uri}/{assignment_id_map[course_id]}/submissions/{sid}'
-	params = {'submission[posted_grade]', str(score)}
+	params = {'submission[posted_grade]': str(score)}
 	try:
+		#print(submission_uri)
+		#pprint(headers)
+		#pprint(params)
 		response = requests.put(url=submission_uri, headers=headers, params=params)
 	except KeyboardInterrupt:
 		print('[!] Exiting')
 		exit()
-	except:
+	except Exception as err:
+		print(err)
 		print('[!] Failed to submit score')
