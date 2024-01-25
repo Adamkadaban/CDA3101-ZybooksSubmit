@@ -17,7 +17,7 @@ with open(CONFIG_FILE) as fin:
 	assignment_id = str(config['assignment_id'])
 
 if None in [zybooks_grades_path, student_mapping_path, access_token, course_id, assignment_id]:
-	print('[!] Item missing from config.yaml. Please check config.yaml.example')
+	print('[!] Item missing from config.yaml. Please check example_config.yaml')
 	exit()
 
 
