@@ -15,6 +15,8 @@ with open(CONFIG_FILE) as fin:
 	access_token = config['api_token']
 	course_id = str(config['course_id'])
 	assignment_id = str(config['assignment_id'])
+	autorun = False if None else config['autorun']
+	verbose = False if None else config['verbose']
 
 if None in [zybooks_grades_path, student_mapping_path, access_token, course_id, assignment_id]:
 	print('[!] Item missing from config.yaml. Please check example_config.yaml')
@@ -112,7 +114,7 @@ if not asst_entry:
 assignment_name = asst_entry[0]['name']
 print(f'Grading for assignment {assignment_name}. Countinue? (Y/n)')
 user_selection = input()
-if user_selection not in ['Y', 'y', '\n', '']:
+if autorun or user_selection not in ['Y', 'y', '\n', '']:
 	print('[-] Exiting')
 	exit()
 
@@ -128,6 +130,8 @@ exercise_name = asst_entry[0]['name']
 
 fail_count = 0
 fail_students = []
+email_checked = []
+name_checked = []
 for sid,name in sids.items():
 	print(f'Working on {name}')
 	submission_uri = f'{assignments_uri}/{assignment_id_map[course_id]}/submissions/{sid}'
@@ -163,6 +167,10 @@ for sid,name in sids.items():
 			fail_count += 1
 			fail_students.append(name)
 			continue
+		else:
+			name_checked.append(name)
+	else:
+		email_checked.append(name)
 	total_points = asst_entry[0]['points_possible']
 	score = total_points * float(percent_score.values[0])/100.0
 	# set grade for student
