@@ -3,26 +3,34 @@
 import pandas as pd
 import requests
 import json
+import yaml
 #from pprint import pprint
 
-zybooks_grades = './thing.xlsx'
-student_mapping = 'student_mapping.csv'
-df = pd.read_excel(zybooks_grades)
+
+CONFIG_FILE = './config.yaml'
+with open(CONFIG_FILE) as fin:
+	config = yaml.safe_load(fin)
+	zybooks_grades_path = config['zybooks_path']
+	student_mapping_path = config['student_sid_path']
+	access_token = config['api_token']
+	course_id = config['course_id']
+	assignment_id = config['assignment_id']
+
+if None in [zybooks_grades_path, student_mapping_path, access_token, course_id, assignment_id]:
+	print('[!] Item missing from config.yaml. Please check config.yaml.example')
+	exit()
+
+
+df = pd.read_excel(zybooks_grades_path)
 df['Full name'] = df['First name'] + ' ' + df['Last name']
 
-
-sid_email_mapping = pd.read_csv(student_mapping)
+sid_email_mapping = pd.read_csv(student_mapping_path)
 sid_email_mapping['email'] = sid_email_mapping['SIS Login ID']
 
 
 # print(df['Last name'])
 
-
-with open('API_TOKEN') as fin:
-	access_token = fin.read().rstrip()
-
-course_id = "498331"
-assignment_map = {"498331":"5921392"}
+assignment_map = {course_id:assignment_id}
 assignment_id_map = {}
 
 assignment_uri_base = 'https://ufl.instructure.com/api/v1/courses/'
