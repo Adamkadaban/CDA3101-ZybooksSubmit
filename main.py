@@ -45,7 +45,7 @@ def paginated_get(url, headers, params):
 		response = requests.get(url=url, headers=headers, params=params)
 		result = json.loads(response.text)
 		if verbose:
-			print('[*] paginated_get response'):
+			print('[*] paginated_get response')
 			pprint(result)
 		data_set.extend(result)
 		# stop when no more responses exit
