@@ -112,8 +112,8 @@ if not asst_entry:
 assignment_name = asst_entry[0]['name']
 print(f'Grading for assignment {assignment_name}. Countinue? (Y/n)')
 user_selection = input()
-if user_selection not in ['Y', 'y', '\n']:
-	print('[+] Exiting')
+if user_selection not in ['Y', 'y', '\n', '']:
+	print('[-] Exiting')
 	exit()
 
 #print(asst_entry)
