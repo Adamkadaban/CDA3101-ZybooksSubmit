@@ -72,6 +72,7 @@ for course_id in assignment_map.keys():
 																		params=assignment_submissions_rq_params)
 	except KeyboardInterrupt:
 		print('[!] Exiting')
+		exit()
 	except Exception as err:
 		print(str(err))
 
@@ -143,6 +144,7 @@ for sid,name in sids.items():
 		submission_response = requests.get(url=submission_uri, headers=headers)
 	except KeyboardInterrupt:
 		print('[!] Exiting')
+		exit()
 	except:
 		print(f'[!] Failed to request this student')
 		continue
@@ -187,6 +189,7 @@ for sid,name in sids.items():
 		response = requests.put(url=submission_uri, headers=headers, params=params)
 	except KeyboardInterrupt:
 		print('[!] Exiting')
+		exit()
 	except:
 		print('[!] Failed to submit score')
 
