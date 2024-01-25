@@ -4,7 +4,7 @@ import pandas as pd
 import requests
 import json
 import yaml
-#from pprint import pprint
+from pprint import pprint
 
 
 CONFIG_FILE = './config.yaml'
@@ -44,6 +44,9 @@ def paginated_get(url, headers, params):
 	while True:
 		response = requests.get(url=url, headers=headers, params=params)
 		result = json.loads(response.text)
+		if verbose:
+			print('[*] paginated_get response'):
+			pprint(result)
 		data_set.extend(result)
 		# stop when no more responses exit
 		if response.links['current']['url'] == response.links['last']['url']:
@@ -103,6 +106,9 @@ assignments_response = requests.get(url=assignments_uri,
 											headers=headers,
 											params={'per_page': '500'})
 assignments = json.loads(assignments_response.text)
+if verbose:
+	print('[*] assignment response')
+	pprint(assignments)
 #print(assignments)
 
 
@@ -147,12 +153,14 @@ for sid,name in sids.items():
 		exit()
 	except Exception as err:
 		print(f'[!] Failed to request this student')
-		print(str(err))
+		print(err)
 		continue
 
 	assignment_entry = json.loads(submission_response.text)
+	if verbose:
+		print('[*] assignment entry')
+		pprint(assignment_entry)
 	#print(assignment_entry)
-
 
 	submission_id = assignment_entry['id']
 	attempt = assignment_entry['attempt']
