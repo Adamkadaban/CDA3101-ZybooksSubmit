@@ -1,7 +1,8 @@
 # CUSTOM
 
 API_TOKEN
-
+*.xlsx
+*.csv
 
 
 # Byte-compiled / optimized / DLL files
