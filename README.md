@@ -15,3 +15,7 @@ Create a file called `config.yml` based on `example_config.yaml`
 pip3 install -r requirements.txt
 python3 main.py
 ```
+
+## TODO
+
+Make sid_student_mapping optional. This file technically isn't required, but is used to make grading more accurate when students did not sign up with an `@ufl.edu` email
