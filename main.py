@@ -22,8 +22,10 @@ if None in [zybooks_grades_path, student_mapping_path, access_token, course_id, 
 	print('[!] Item missing from config.yaml. Please check example_config.yaml')
 	exit()
 
-
-df = pd.read_excel(zybooks_grades_path)
+try:
+	df = pd.read_excel(zybooks_grades_path)
+except ValueError:
+	df = pd.read_csv(zybooks_grades_path)
 df['Full name'] = df['First name'] + ' ' + df['Last name']
 
 sid_email_mapping = pd.read_csv(student_mapping_path)
