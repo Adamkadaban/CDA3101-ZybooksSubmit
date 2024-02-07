@@ -5,3 +5,13 @@ Script for submitting grades from zybooks to canvas
 	- I've removed everything but the sid and email, as other content isn't necessary for this script
 	- See [here](https://support.canvas.fsu.edu/kb/article/1524-how-can-i-easily-get-a-list-of-my-students-email-addresses-in-canvas/)
 
+
+
+## How to use?
+
+Create a file called `config.yml` based on `example_config.yaml`
+
+```bash
+pip3 install -r requirements.txt
+python3 main.py
+```
