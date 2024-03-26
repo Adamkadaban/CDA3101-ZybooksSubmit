@@ -80,6 +80,8 @@ for course_id in assignment_map.keys():
 		exit()
 	except Exception as err:
 		print(str(err))
+		print('[!] Error. Perhaps the course doesn\'t exist?')
+		exit()
 
 	for entry_dict in data_set:
 		'''
