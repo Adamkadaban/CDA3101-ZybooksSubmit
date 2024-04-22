@@ -148,6 +148,9 @@ fail_students = []
 email_checked = []
 name_checked = []
 for sid,name in sids.items():
+	if name == 'Test Student':
+		print(f'Skipping Test Student')
+		break
 	print(f'Working on {name}')
 	submission_uri = f'{assignments_uri}/{assignment_id_map[course_id]}/submissions/{sid}'
 	try:
