@@ -17,6 +17,7 @@ with open(CONFIG_FILE) as fin:
 	assignment_id = str(config['assignment_id'])
 	autorun = False if None else config['autorun']
 	verbose = False if None else config['verbose']
+	dry_run = False if None else config['dry_run']
 
 if None in [zybooks_grades_path, student_mapping_path, access_token, course_id, assignment_id]:
 	print('[!] Item missing from config.yaml. Please check example_config.yaml')
@@ -123,6 +124,8 @@ if not asst_entry:
 	asst_entry = list(filter(lambda x: 'id' in x and str(x['id']) == assignment_map[course_id], assignments))
 
 assignment_name = asst_entry[0]['name']
+if dry_run:
+	print(f'Doing dry run. Will not submit grades to canvas')
 print(f'Grading for assignment {assignment_name}.', end='')
 if not autorun:
 	print(' Countinue? (Y/n)')
@@ -205,7 +208,10 @@ for sid,name in sids.items():
 		#print(submission_uri)
 		#pprint(headers)
 		#pprint(params)
-		response = requests.put(url=submission_uri, headers=headers, params=params)
+		if not dry_run:
+			response = requests.put(url=submission_uri, headers=headers, params=params)
+		else:
+			print('Skipping')
 	except KeyboardInterrupt:
 		print('[!] Exiting')
 		exit()

@@ -5,3 +5,4 @@ student_sid_path: ./student_mapping.csv
 api_token: 0000~aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 autorun: Yes
 verbose: No
+dry_run: No
